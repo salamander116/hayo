@@ -1,0 +1,105 @@
+package person;
+
+public class Person implements PessoaInterface {
+	static final int DEFAULT_SIZE_FRIENDS = 25;
+	static final int DEFAULT_SIZE_MORAL = 50;
+
+	private int counter;
+	private int counterM;
+	private int currentPost;
+	private Person[] friends;
+	private String[] moral;
+
+	private String name;
+	private String status;
+
+	public Person(String name, String status) {
+		this.name = name;
+		this.status = status;
+		counter = 0;
+		counterM = 0;
+		friends = new Person[DEFAULT_SIZE_FRIENDS];
+		moral = new String[DEFAULT_SIZE_MORAL];
+		currentPost = -1;
+
+	}
+	
+	public void initializMit(){
+		currentPost = 0;
+	}
+	
+	public boolean hasNextP(){
+		return (currentPost >=0 && currentPost < counter);
+	}
+	
+	public String nextP(){
+		return moral[currentPost++];
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+
+	}
+
+	public void setFriend(Person name) {
+		if (counter == friends.length)
+			resize();
+
+		friends[counter] = name;
+		counter++;
+
+	}
+	
+	public void setFriendPost(String name, String post){
+		
+		friends[checkFriend(name)].addPost(post);
+		
+	}
+
+	public int checkFriend(String name) {
+
+		int result = -1;
+		boolean found = false;
+
+		for (int i = 0; i < counter && !found; i++) {
+			if (friends[i].getName().equals(name)) {
+				result = i;
+				found = true;
+
+			}
+		}
+		return result;
+	}
+
+	private void resize() {
+		Person tmp[] = new Person[2 * friends.length];
+		for (int i = 0; i < counter; i++)
+			tmp[i] = friends[i];
+		friends = tmp;
+
+	}
+
+	public int howSocial() {
+		return counter;
+
+	}
+	
+	public void addPost(String post){
+		
+		moral[counterM]= post;
+		counterM++;
+		
+	
+	}
+	
+	
+
+}
